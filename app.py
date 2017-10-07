@@ -32,10 +32,9 @@ def get_summoner(summoner_name):
     try:
         response = request.urlopen('{}{}?api_key={}'.format(
             SUMMONER_URL, summoner_name, API_SECRET_KEY)).read()
+        return json.loads(response.decode())
     except Exception as warning:
         print(warning)
-    finally:
-        return json.loads(response)
 
 
 def get_roles(account_id):
@@ -45,7 +44,7 @@ def get_roles(account_id):
     except Exception as warning:
         print(warning)
     finally:
-        return json.loads(response)
+        return json.loads(response.decode())
 
 
 def proccess_roles(match_info):
@@ -80,7 +79,7 @@ def get_champions_mastery(summoner_id):
     except Exception as warning:
         print(warning)
     finally:
-        return json.loads(response)
+        return json.loads(response.decode())
 
 
 '''
