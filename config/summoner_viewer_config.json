@@ -1,6 +1,7 @@
 {
-	"api_secret_key": "YOUR_API_KEY",
+	"api_secret_key": "RGAPI-cc95b3b7-31ef-481a-9711-e2ca8f813f34",
 	"summoner_url": "https://br1.api.riotgames.com/lol/summoner/v3/summoners/by-name/",
 	"champions_info_url": "https://br1.api.riotgames.com/lol/static-data/v3/champions?locale=pt_BR&dataById=false&api_key=",
-	"champions_mastery_url": "https://br1.api.riotgames.com/lol/champion-mastery/v3/champion-masteries/by-summoner/"
+	"champions_mastery_url": "https://br1.api.riotgames.com/lol/champion-mastery/v3/champion-masteries/by-summoner/",
+	"recent_match_info": "https://br1.api.riotgames.com/lol/match/v3/matchlists/by-account/"
 }

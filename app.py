@@ -16,7 +16,10 @@ from docopt import docopt
 from utils.json_to_dict import to_dict
 import json
 
-SUMMONER_URL = to_dict('config/summoner_viewer_config.json')['summoner_url']
+SUMMONER_URL = to_dict(
+    'config/summoner_viewer_config.json')['summoner_url']
+MATCH_URL = to_dict(
+    'config/summoner_viewer_config.json')['recent_match_info']
 CHAMPIONS_INFO_URL = to_dict(
     'config/summoner_viewer_config.json')['champions_info_url']
 CHAMPIONS_MASTERY_URL = to_dict(
@@ -33,6 +36,41 @@ def get_summoner(summoner_name):
         print(warning)
     finally:
         return json.loads(response)
+
+
+def get_roles(account_id):
+    try:
+        response = request.urlopen('{}{}?api_key={}'.format(
+            MATCH_URL, account_id, API_SECRET_KEY)).read()
+    except Exception as warning:
+        print(warning)
+    finally:
+        return json.loads(response)
+
+
+def proccess_roles(match_info):
+    roles = dict()
+    role_and_match = dict()
+    full_list = list()
+    i = 0
+    j = 1
+    count = 0
+    for values in match_info['matches']:
+        roles[values['lane']] = 0
+    for values in match_info['matches']:
+        count += 1
+        roles[values['lane']] += 1
+    for key, value in roles.items():
+        role_and_match['role'] = key
+        role_and_match['matches'] = ((value / count) * 100)
+        full_list.append(dict(role_and_match))
+    for i in range(len(full_list)):
+        for j in range(len(full_list)):
+            if full_list[i]['matches'] > full_list[j]['matches']:
+                aux = full_list[j]
+                full_list[j] = full_list[i]
+                full_list[i] = aux
+    return full_list
 
 
 def get_champions_mastery(summoner_id):
@@ -76,7 +114,7 @@ def get_champions_name(high_score_champions, champions_data):
         return high_score_champions
 
 
-def print_in_format(champions):
+def print_in_format(champions, main_roles):
     print('\n => Highest Score Champions:\n')
     for champion in champions:
         if(champion.get('championName')):
@@ -84,6 +122,11 @@ def print_in_format(champions):
                 champion['championName'], champion['championPoints']))
         else:
             print('ID: {} not found!'.format(champion['championId']))
+    print('\n => Possible Roles:\n')
+    for roles in main_roles:
+        print(
+            '\t{}: {:.1f}% {}'.format(
+                roles['role'], roles['matches'], 'games'))
 
 
 if __name__ == '__main__':
@@ -91,7 +134,8 @@ if __name__ == '__main__':
     summoner_name = args['<summoner_name>']
     summoner_dict = get_summoner(summoner_name)
     champions = get_champions_mastery(summoner_dict['id'])
+    main_roles = proccess_roles(get_roles(summoner_dict['accountId']))
     champions_info = champions_data['data']
     high_score_champions = get_champions_name(
         get_high_score_champions(champions), champions_info)
-    print_in_format(high_score_champions)
+    print_in_format(high_score_champions, main_roles)
