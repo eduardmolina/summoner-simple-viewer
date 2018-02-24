@@ -11,6 +11,7 @@ class Champions(object):
     def get_all_champions_info(self):
         try:
             response = json.loads(requests.get('{}{}'.format(Champions._champions_i_uri, self.api_key)).text)
-        except Exception:
-            raise ValueError('[*] Get Champions Info Error')
+        except Exception as error:
+            print(error)
+            raise
         return response

@@ -18,14 +18,16 @@ class Summoner(object):
     def _get_summoner(self, summoner_api_uri, api_key):
         try:
             response = json.loads(requests.get('{}{}?api_key={}'.format(summoner_api_uri, self.name, api_key)).text)
-        except Exception:
+        except Exception as error:
+            print(error)
             raise
         return response
 
     def _get_roles(self, match_api_uri, api_key):
         try:
             response = json.loads(requests.get('{}{}?api_key={}'.format(match_api_uri, self.account_id, api_key)).text)
-        except Exception:
+        except Exception as error:
+            print(error)
             raise
         return response
 
@@ -33,6 +35,7 @@ class Summoner(object):
         try:
             response = json.loads(
                 requests.get('{}{}?api_key={}'.format(champions_mastery_api_uri, self.summoner_id, api_key)).text)
-        except Exception:
+        except Exception as error:
+            print(error)
             raise
         return response
