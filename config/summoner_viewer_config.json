@@ -1,7 +1,0 @@
-{
-	"api_secret_key": "API_KEY",
-	"summoner_url": "https://br1.api.riotgames.com/lol/summoner/v3/summoners/by-name/",
-	"champions_info_url": "https://br1.api.riotgames.com/lol/static-data/v3/champions?locale=pt_BR&dataById=false&api_key=",
-	"champions_mastery_url": "https://br1.api.riotgames.com/lol/champion-mastery/v3/champion-masteries/by-summoner/",
-	"recent_match_info": "https://br1.api.riotgames.com/lol/match/v3/matchlists/by-account/"
-}
